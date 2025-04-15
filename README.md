@@ -62,9 +62,5 @@ This project is a **QR Code Generator** built with **Vue 3** and **Vite**. It al
 
 Created by **Leonardo Müller**.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
 ---  
 Enjoy generating beautiful QR codes! 🎉  
