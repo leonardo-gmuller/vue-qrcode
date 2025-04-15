@@ -20,7 +20,7 @@ This project is a **QR Code Generator** built with **Vue 3** and **Vite**. It al
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/vue-qrcode.git
+    git clone https://github.com/leonardo-gmuller/vue-qrcode.git
     cd vue-qrcode
     ```
 
