@@ -61,7 +61,7 @@
                     </Accordion>
                     <Accordion value="1">
                         <AccordionPanel value="1">
-                            <AccordionHeader>Background</AccordionHeader>
+                            <AccordionHeader>Fundo</AccordionHeader>
                             <AccordionContent>
                                 <div class="flex align-items-center">
                                     <div>
@@ -83,7 +83,7 @@
                                     <FloatLabel variant="on">
                                         <Select fluid v-model="cornerSquareType" :options="optionsCornerSquare"
                                             optionLabel="label" optionValue="value"></Select>
-                                        <label for="on_label">Estilo dos cantos</label>
+                                        <label for="on_label">Estilo dos cantos (exterior)</label>
                                     </FloatLabel>
                                 </div>
                                 <div class="mt-3 flex align-items-center">
@@ -99,7 +99,7 @@
                                     <FloatLabel variant="on">
                                         <Select fluid v-model="cornerDotType" :options="optionsCornerSquare"
                                             optionLabel="label" optionValue="value" />
-                                        <label for="on_label">Estilo dos cantos</label>
+                                        <label for="on_label">Estilo dos cantos (interior)</label>
                                     </FloatLabel>
                                 </div>
                                 <div class="mt-3 flex align-items-center">
@@ -220,15 +220,15 @@ const updateQRCode = () => {
     qrCode.update({
         data: text.value,
         cornersSquareOptions: {
-            color: '#' + colorEyes.value,
+            color: colorBackEyes.value.startsWith('#') ? colorBackEyes.value : '#' + colorBackEyes.value,
             type: cornerSquareType.value
         },
         cornersDotOptions: {
-            color: '#' + colorBackEyes.value,
+            color: colorEyes.value.startsWith('#') ? colorEyes.value : '#' + colorEyes.value,
             type: cornerDotType.value
         },
         dotsOptions: {
-            color: '#' + colorBackground.value,
+            color: colorBackground.value.startsWith('#') ? colorBackground.value : '#' + colorBackground.value,
             type: dotsType.value
         },
         image: srcimg.value,
@@ -253,12 +253,16 @@ const save = () => {
         data: text.value,
         margin: 6,
         dotsOptions: {
-            color: colorBackground.value,
+            color: colorBackground.value.startsWith('#') ? colorBackground.value : '#' + colorBackground.value,
             type: dotsType.value
         },
         cornersSquareOptions: {
             type: cornerSquareType.value,
-            color: colorEyes.value
+            color: colorBackEyes.value.startsWith('#') ? colorBackEyes.value : '#' + colorBackEyes.value
+        },
+        cornersDotOptions: {
+            type: cornerDotType.value,
+            color: colorEyes.value.startsWith('#') ? colorEyes.value : '#' + colorEyes.value
         },
         backgroundOptions: {
             color: "#ffffff"
