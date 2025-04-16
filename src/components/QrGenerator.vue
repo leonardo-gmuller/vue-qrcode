@@ -1,32 +1,35 @@
 <!-- src/components/QrGenerator.vue -->
 <template>
-    <div class="flex">
+    <div class="grid gap-5">
         <Card>
             <template #content>
                 <div>
-                    <Accordion value="0">
+                    <Accordion :value="['0', '1', '2']" multiple>
                         <AccordionPanel value="0">
                             <AccordionHeader>Principal</AccordionHeader>
                             <AccordionContent>
-                                <div class="flex">
+                                <div class="mt-2 grid gap-3">
                                     <div>
                                         <div>
                                             <FloatLabel variant="on">
-                                                <InputText id="on_label" v-model="text" fluid />
+                                                <InputText id="on_label" v-model="text" fluid
+                                                    @update:modelValue="updateQRCode" />
                                                 <label for="on_label">Link</label>
                                             </FloatLabel>
                                         </div>
                                         <div class="mt-3 text-left">
                                             <FloatLabel variant="on">
                                                 <Select fluid v-model="dotsType" :options="optionsDot"
-                                                    optionLabel="label" optionValue="value" />
+                                                    optionLabel="label" optionValue="value"
+                                                    @update:modelValue="updateQRCode" />
                                                 <label for="on_label">Estilo dos pontos</label>
                                             </FloatLabel>
                                         </div>
                                     </div>
-                                    <div class="ml-3">
+                                    <div class="">
                                         <FileUpload customUpload @select="onFileSelect" accept="image/*"
-                                            chooseLabel="Escolha uma imagem" cancelLabel="Cancelar" :fileLimit="1">
+                                            chooseLabel="Escolha uma imagem" cancelLabel="Cancelar" :fileLimit="1"
+                                            @remove="onFileRemove">
                                             <template #header="{ chooseCallback, files }">
                                                 <div class="flex align-items-center">
                                                     <Button label="Escolher imagem" icon="pi pi-fw pi-plus"
@@ -58,69 +61,79 @@
                                 </div>
                             </AccordionContent>
                         </AccordionPanel>
-                    </Accordion>
-                    <Accordion value="1">
                         <AccordionPanel value="1">
                             <AccordionHeader>Fundo</AccordionHeader>
                             <AccordionContent>
-                                <div class="flex align-items-center">
+                                <div class="mt-2 flex align-items-center">
                                     <div>
-                                        <FloatLabel variant="on">
-                                            <InputText id="on_label" v-model="colorBackground" />
-                                            <label for="on_label">Cor de fundo</label>
-                                        </FloatLabel>
+                                        <IconField>
+                                            <FloatLabel variant="on">
+                                                <InputIcon class="pi pi-palette" />
+                                                <InputText id="on_label" v-model="colorBackground" />
+                                                <label for="on_label">Cor de fundo</label>
+                                            </FloatLabel>
+                                        </IconField>
+
                                     </div>
                                     <ColorPicker class="ml-2" v-model="colorBackground" format="hex" />
                                 </div>
                             </AccordionContent>
                         </AccordionPanel>
-                    </Accordion>
-                    <Accordion value="2">
                         <AccordionPanel value="2">
                             <AccordionHeader>Cantos</AccordionHeader>
                             <AccordionContent>
-                                <div class="text-left">
-                                    <FloatLabel variant="on">
-                                        <Select fluid v-model="cornerSquareType" :options="optionsCornerSquare"
-                                            optionLabel="label" optionValue="value"></Select>
-                                        <label for="on_label">Estilo dos cantos (exterior)</label>
-                                    </FloatLabel>
-                                </div>
-                                <div class="mt-3 flex align-items-center">
-                                    <div>
+                                <div class="mt-2">
+                                    <div class="text-left">
                                         <FloatLabel variant="on">
-                                            <InputText id="on_label" v-model="colorEyes" />
-                                            <label for="on_label">Cor de dentro</label>
+                                            <Select fluid v-model="cornerSquareType" :options="optionsCornerSquare"
+                                                optionLabel="label" optionValue="value"
+                                                @update:modelValue="updateQRCode"></Select>
+                                            <label for="on_label">Estilo dos cantos (exterior)</label>
                                         </FloatLabel>
                                     </div>
-                                    <ColorPicker class="ml-2" v-model="colorEyes" format="hex" />
-                                </div>
-                                <div class="mt-3 text-left">
-                                    <FloatLabel variant="on">
-                                        <Select fluid v-model="cornerDotType" :options="optionsCornerSquare"
-                                            optionLabel="label" optionValue="value" />
-                                        <label for="on_label">Estilo dos cantos (interior)</label>
-                                    </FloatLabel>
-                                </div>
-                                <div class="mt-3 flex align-items-center">
-                                    <div>
+                                    <div class="mt-3 flex align-items-center">
+                                        <div>
+                                            <IconField>
+                                                <FloatLabel variant="on">
+                                                    <InputIcon class="pi pi-palette" />
+                                                    <InputText id="on_label" v-model="colorEyes" />
+                                                    <label for="on_label">Cor de dentro</label>
+                                                </FloatLabel>
+                                            </IconField>
+                                        </div>
+                                        <ColorPicker class="ml-2" v-model="colorEyes" format="hex" />
+                                    </div>
+                                    <div class="mt-3 text-left">
                                         <FloatLabel variant="on">
-                                            <InputText id="on_label" v-model="colorBackEyes" />
-                                            <label for="on_label">Cor de fora</label>
+                                            <Select fluid v-model="cornerDotType" :options="optionsCornerSquare"
+                                                optionLabel="label" optionValue="value"
+                                                @update:modelValue="updateQRCode" />
+                                            <label for="on_label">Estilo dos cantos (interior)</label>
                                         </FloatLabel>
                                     </div>
-                                    <ColorPicker class="ml-2" v-model="colorBackEyes" format="hex" />
+                                    <div class="mt-3 flex align-items-center">
+                                        <div>
+                                            <IconField>
+                                            <FloatLabel variant="on">
+                                                <InputIcon class="pi pi-palette" />
+                                                <InputText id="on_label" v-model="colorBackEyes" />
+                                                <label for="on_label">Cor de fora</label>
+                                            </FloatLabel>
+                                        </IconField>
+                                        </div>
+                                        <ColorPicker class="ml-2" v-model="colorBackEyes" format="hex" />
+                                    </div>
                                 </div>
                             </AccordionContent>
                         </AccordionPanel>
                     </Accordion>
                     <div class="mt-4">
-                        <Button label="Gerar QR Code" :onClick="updateQRCode" />
+                        <Button label="Cancelar" :onClick="reset" severity="danger" text />
                     </div>
                 </div>
             </template>
         </Card>
-        <div class="flex flex-column align-items-center ml-5">
+        <div class="flex flex-column align-items-center w-full md:w-auto lg:w-auto xl:w-auto">
             <div class="mt-auto mb-auto">
                 <div ref="qrCodeRef"></div>
                 <div class="mt-3 flex align-items-center justify-content-center">
@@ -152,6 +165,9 @@ import AccordionContent from 'primevue/accordioncontent';
 import Card from 'primevue/card';
 import Select from 'primevue/select';
 import Message from 'primevue/message';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputNumber from 'primevue/inputnumber';
 
 
 const text = ref("https://exemplo.com")
@@ -241,9 +257,16 @@ const onFileSelect = (event) => {
 
     reader.onload = async (e) => {
         srcimg.value = e.target.result;
+        updateQRCode();
     };
 
     reader.readAsDataURL(file);
+
+}
+
+const onFileRemove = (event) => {
+    srcimg.value = null;
+    updateQRCode();
 }
 
 const save = () => {
@@ -278,4 +301,35 @@ const save = () => {
         extension: typeDownload.value,
     })
 }
+
+const reset = () => {
+    text.value = "https://exemplo.com";
+    colorBackground.value = "#000000";
+    colorBackEyes.value = "#000000";
+    colorEyes.value = "#000000";
+    srcimg.value = null;
+    dotsType.value = "rounded";
+    cornerSquareType.value = "rounded";
+    cornerDotType.value = "rounded";
+    updateQRCode();
+}
+
+const formatColor = (color) => {
+    if (!color.startsWith('#')) {
+        return color = '#' + color;
+    }
+    return color;
+}
+watch(colorBackground, (newValue) => {
+    colorBackground.value = formatColor(newValue);
+    updateQRCode();
+})
+watch(colorBackEyes, (newValue) => {
+    colorBackEyes.value = formatColor(newValue);
+    updateQRCode();
+})
+watch(colorEyes, (newValue) => {
+    colorEyes.value = formatColor(newValue);
+    updateQRCode();
+})
 </script>
