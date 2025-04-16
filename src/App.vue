@@ -5,7 +5,7 @@ import QrGenerator from './components/QrGenerator.vue';
 <template>
     <h1>Gerador de QR Code</h1>
   <QrGenerator />
-  <h4>Criado por Leonardo Müller</h4>
+  <h4>Criado por Leonardo Müller - 2025</h4>
 </template>
 
 <style scoped>

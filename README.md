@@ -9,6 +9,10 @@ This project is a **QR Code Generator** built with **Vue 3** and **Vite**. It al
 - **Real-Time Preview**: See changes instantly as you customize.
 - **Download Options**: Save QR codes in PNG, JPEG, WEBP, or SVG formats.
 
+## Demo
+
+[Demo](https://vue-qrcode-ded32.web.app/) - Try the live demo to customize and generate QR codes interactively.
+
 ## Tech Stack
 
 - **Vue 3**: Frontend framework.
